@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mariachi Nacional de CR</title>
+    <meta name="description" content="Mariachi Nacional de CR - Música tradicional para bodas, cumpleaños, eventos especiales y más.">
+    
+    <style>
+        :root {
+            --bg: #e5e5e5;
+            --bg-alt: #d8d8d8;
+            --text: #000;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            background: var(--bg);
+            color: var(--text);
+        }
+        
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(229, 229, 229, 0.95);
+            border-bottom: 1px solid #bbb;
+            z-index: 1000;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text);
+        }
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 600;
+        }
+        nav a:hover { opacity: 0.6; }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            height: 100vh;
+            padding: 0;
+            text-align: center;
+            color: var(--text);
+            overflow: hidden;
+        }
+        .hero-visual {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .hero-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        .hero-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            padding: 100px 5% 0;
+        }
+        .hero-content h1 {
+            font-size: 4.5rem;
+            margin-bottom: 10px;
+            color: #000;
+            -webkit-text-stroke: 1.2px #fff;
+            paint-order: stroke fill;
+            text-shadow:
+                -1px -1px 0 #fff,
+                 1px -1px 0 #fff,
+                -1px  1px 0 #fff,
+                 1px  1px 0 #fff,
+                 0   -1.2px 0 #fff,
+                 0    1.2px 0 #fff,
+                -1.2px  0   0 #fff,
+                 1.2px  0   0 #fff;
+        }
+        .hero-location {
+            font-size: 1.8rem;
+            text-align: center;
+            color: #000;
+            -webkit-text-stroke: 0.6px #fff;
+            paint-order: stroke fill;
+            text-shadow:
+                -1px -1px 0 #fff,
+                 1px -1px 0 #fff,
+                -1px  1px 0 #fff,
+                 1px  1px 0 #fff,
+                 0   -1px 0 #fff,
+                 0    1px 0 #fff,
+                -1px  0   0 #fff,
+                 1px  0   0 #fff;
+        }
+
+        /* Gallery Styles */
+        #gallery {
+            padding: 100px 5%;
+            background: var(--bg);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .gallery-grid a {
+            display: block;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            aspect-ratio: 16 / 12;   /* Makes all thumbnails same height */
+        }
+        .gallery-grid img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .gallery-grid a:hover {
+            transform: scale(1.04);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+        }
+        .gallery-grid a:hover img {
+            transform: scale(1.02);
+        }
+
+        /* CSS-only Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.92);
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        .lightbox:target {
+            display: flex;
+        }
+        .lightbox img, .lightbox video {
+            max-width: 95%;
+            max-height: 95vh;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+        }
+        .close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: #fff;
+            font-size: 50px;
+            text-decoration: none;
+            line-height: 1;
+            opacity: 0.8;
+        }
+        .close:hover {
+            opacity: 1;
+        }
+
+        /* Other styles */
+        section {
+            padding: 100px 5%;
+            background: var(--bg);
+            color: var(--text);
+        }
+        h2 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 50px;
+            color: var(--text);
+        }
+        .about { background: var(--bg-alt); }
+        .contact {
+            background: var(--bg-alt);
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            padding: 14px 40px;
+            background: var(--text);
+            color: var(--bg);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            opacity: 0.8;
+            transform: scale(1.02);
+        }
+        footer {
+            background: var(--bg);
+            color: var(--text);
+            text-align: center;
+            padding: 60px 5% 30px;
+            border-top: 1px solid #bbb;
+        }
+        .social a {
+            color: var(--text);
+            font-size: 1.8rem;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+        nav.active {
+            display: flex;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(229, 229, 229, 0.98);
+            padding: 20px 5%;
+            gap: 15px;
+        }
+        nav.active a { margin-left: 0; }
+
+        @media (max-width: 768px) {
+            .hero {
+                height: auto;
+                display: block;
+                padding-top: 70px;
+                overflow: visible;
+            }
+            .hero-visual {
+                position: relative;
+            }
+            .hero-bg {
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+            }
+            .hero-content {
+                position: absolute;
+                top: auto;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+            .hero-content h1 {
+                font-size: 1.4rem;
+                -webkit-text-stroke: 0.6px #fff;
+            }
+            .hero-location {
+                font-size: 1rem;
+                -webkit-text-stroke: 0.4px #fff;
+            }
+            .hero-content p { font-size: 1.1rem; margin-bottom: 16px; }
+            nav { 
+                display: none;
+            }
+            .hamburger { display: block;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr; 
+                gap: 15px; /* Slightly smaller gap on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">Mariachi Nacional de CR</div>
+        <nav>
+            <a href="#about">Nosotros</a>
+            <a href="#gallery">Galería</a>
+            <a href="#contact">Contacto</a>
+        </nav>
+        <button class="hamburger" aria-label="Menú">&#9776;</button>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-visual">
+            <img class="hero-bg" src="hero_image.jpg" alt="Mariachi Nacional de CR" fetchpriority="high">
+        </div>
+        <div class="hero-content">
+            <h1>Mariachi Nacional de CR</h1>
+            <p class="hero-location">Alajuela</p>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="about">
+        <h2>Sobre Nosotros</h2>
+        <p style="max-width: 800px; margin: 0 auto; font-size: 1.5rem; text-align: center;">
+            Mariachi Nacional de Costa Rica es un grupo de mariachi tradicional con más de 60 años de experiencia. 
+            Desde 1958, servimos a todo el país, llevando música y alegría a bodas, cumpleaños, serenatas, eventos especiales y más.
+        </p>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+        <h2>Galería</h2>
+        <h3 style="text-align:center; font-size:1.8rem; margin-bottom:30px; color:var(--text);">Eventos</h3>
+        <div class="gallery-grid" style="margin-bottom:60px;">
+            <a href="#img1"><img src="image1.jpg" alt="Mariachi Nacional de CR 1" loading="lazy"></a>
+            <a href="#img2"><img src="image2.jpg" alt="Mariachi Nacional de CR 2" loading="lazy"></a>
+            <a href="#img3"><img src="image3.jpg" alt="Mariachi Nacional de CR 3" loading="lazy"></a>
+            <a href="#img4"><img src="image4.jpg" alt="Mariachi Nacional de CR 4" loading="lazy"></a>
+            <a href="#img5"><img src="image5.jpg" alt="Mariachi Nacional de CR 5" loading="lazy"></a>
+            <a href="#img6"><img src="image6.jpg" alt="Mariachi Nacional de CR 6" loading="lazy"></a>
+        </div>
+
+        <h3 style="text-align:center; font-size:1.8rem; margin-bottom:30px; color:var(--text);">Videos</h3>
+        <div class="gallery-grid" style="margin-bottom:60px;">
+            <a href="#vid1"><img src="video1-thumbnail.jpg" alt="Video 1" loading="lazy"></a>
+            <a href="#vid2"><img src="video2-thumbnail.jpg" alt="Video 2" loading="lazy"></a>
+            <a href="#vid3"><img src="video3-thumbnail.jpg" alt="Video 3" loading="lazy"></a>
+        </div>
+        
+         <h3 style="text-align:center; font-size:1.8rem; margin-bottom:30px; color:var(--text);">Recuerdos</h3>
+         <!--
+        <div class="gallery-grid" style="margin-bottom:60px;">
+            <a href="#img1"><img src="image1.jpg" alt="Mariachi Nacional de CR 1" loading="lazy"></a>
+            <a href="#img2"><img src="image2.jpg" alt="Mariachi Nacional de CR 2" loading="lazy"></a>
+            <a href="#img3"><img src="image3.jpg" alt="Mariachi Nacional de CR 3" loading="lazy"></a>
+            <a href="#img4"><img src="image4.jpg" alt="Mariachi Nacional de CR 4" loading="lazy"></a>
+            <a href="#img5"><img src="image5.jpg" alt="Mariachi Nacional de CR 5" loading="lazy"></a>
+            <a href="#img6"><img src="image6.jpg" alt="Mariachi Nacional de CR 6" loading="lazy"></a>
+        </div>
+        -->
+    </section>
+    <!-- Lightbox Items -->
+    <div id="img1" class="lightbox">
+        <a href="#gallery" class="close">&times;</a>
+        <img src="image1.jpg" alt="Mariachi Nacional de CR 1" loading="lazy">
+    </div>
+    <div id="img2" class="lightbox">
+        <a href="#gallery" class="close">&times;</a>
+        <img src="image2.jpg" alt="Mariachi Nacional de CR 2" loading="lazy">
+    </div>
+    <div id="img3" class="lightbox">
+        <a href="#gallery" class="close">&times;</a>
+        <img src="image3.jpg" alt="Mariachi Nacional de CR 3" loading="lazy">
+    </div>
+    <div id="img4" class="lightbox">
+        <a href="#gallery" class="close">&times;</a>
+        <img src="image4.jpg" alt="Mariachi Nacional de CR 4" loading="lazy">
+    </div>
+    <div id="img5" class="lightbox">
+        <a href="#gallery" class="close">&times;</a>
+        <img src="image5.jpg" alt="Mariachi Nacional de CR 5" loading="lazy">
+    </div>
+    <div id="img6" class="lightbox">
+        <a href="#gallery" class="close">&times;</a>
+        <img src="image6.jpg" alt="Mariachi Nacional de CR 6" loading="lazy">
+    </div>
+    
+     <div id="vid1" class="lightbox">
+        <a href="#gallery" class="close" onclick="pauseVideo('videoPlayer1')">&times;</a>
+        <video id="videoPlayer1" controls loop>
+            <source src="video1.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div id="vid2" class="lightbox">
+        <a href="#gallery" class="close" onclick="pauseVideo('videoPlayer2')">&times;</a>
+        <video id="videoPlayer2" controls loop>
+            <source src="video2.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div id="vid3" class="lightbox">
+        <a href="#gallery" class="close" onclick="pauseVideo('videoPlayer3')">&times;</a>
+        <video id="videoPlayer3" controls loop>
+            <source src="video3.mp4" type="video/mp4">
+        </video>
+    </div>
+    
+    <!-- CONTACT -->
+    <section id="contact" class="contact">
+        <h2>Será un gusto atenderle</h2>
+        <p style="font-size: 1.5rem; margin: 15px 0;">
+        Contáctenos para cotizar su evento<br><br>
+        <a href="mailto:mariachi.nacional@hotmail.com?subject=Cotizacion" style="color: var(--text);">mariachi.nacional@hotmail.com</a><br>
+        Teléfono: +506 8352-0606
+        </p>
+        <a href="https://wa.me/50683520606" class="btn">Contactar por WhatsApp</a>
+        <div style="margin-top: 25px; display: flex; gap: 20px; justify-content: center;">
+            <a href="https://facebook.com/MariachiNacionalCR" target="_blank" rel="noopener">
+                <img src="facebook.png" alt="Facebook" width="48" height="48">
+            </a>
+            <a href="https://instagram.com/mariachinacionaldecr" target="_blank" rel="noopener">
+                <img src="instagram.png" alt="Instagram" width="48" height="48">
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Mariachi Nacional de CR. Alajuela, CR.</p>
+        <div class="social"></div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        function pauseVideo(id) {
+            const video = document.getElementById(id);
+            if (video) { video.pause(); video.currentTime = 0; }
+        }
+        document.querySelector('.hamburger').addEventListener('click', () => {
+            document.querySelector('nav').classList.toggle('active');
+        });
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('nav').classList.remove('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
